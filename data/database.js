@@ -1,33 +1,31 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const { MongoClient } = require('mongodb');
 
-const uri = process.env.MONGO_URI;
-if (!uri) {
-    throw new Error("MONGO_URI is not defined. Check your .env file.");
-}
+let database;
 
-let _db;
-
-const initDb = async () => {
-    if (_db) {
-        console.log("Database is already initialized!");
-        return _db;
-    }
-
-    try {
-        const client = await MongoClient.connect(uri);
-        _db = client.db();
-        console.log("Database Connected!");
-    } catch (err) {
-        console.error("Database connection failed", err);
-        throw err;
-    }
+const initDb = (callback) => {
+  if (database) {
+    console.log('Database is already initialized!');
+    return callback(null, database);
+  }
+  
+  MongoClient.connect(process.env.MONGODB_URI)
+    .then((client) => {
+      database = client.db();  // Get database instance
+      console.log('Connected to MongoDB');
+      callback(null, database);
+    })
+    .catch((err) => {
+      callback(err);
+    });
 };
 
-const getDb = () => {
-    if (!_db) {
-        throw new Error("Database not initialized!");
-    }
-    return _db;
+const getDatabase = () => {
+  if (!database) {
+    throw Error('Database not initialized');
+  }
+  return database;
 };
 
-module.exports = { initDb, getDb };
+module.exports = { initDb, getDatabase };
