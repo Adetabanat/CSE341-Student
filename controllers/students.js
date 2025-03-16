@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const getAllStudents = async (req, res) => {
   try {
-    const students = await mongodb.getDatabase().collection('students').find().toArray();
+    const students = await mongodb.getDatabase().db().collection('students').find().toArray();
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json(students);
   } catch (error) {
@@ -15,7 +15,7 @@ const getAllStudents = async (req, res) => {
 const getStudentById = async (req, res) => {
   try {
     const studentId = new ObjectId(req.params.id);
-    const student = await mongodb.getDatabase().collection('students').findOne({ _id: studentId });
+    const student = await mongodb.getDatabase().db().collection('students').findOne({ _id: studentId });
 
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
@@ -66,7 +66,7 @@ const createStudent = async (req, res) => {
       contact,
     };
 
-    const result = await mongodb.getDatabase().collection('students').insertOne(newStudent);
+    const result = await mongodb.getDatabase().db().collection('students').insertOne(newStudent);
     res.status(201).json({ message: 'Student created', studentId: result.insertedId });
   } catch (error) {
     console.error('Error creating student:', error);
@@ -79,7 +79,7 @@ const updateStudent = async (req, res) => {
     const studentId = new ObjectId(req.params.id);
     const updatedStudent = req.body;
 
-    const result = await mongodb.getDatabase().collection('students').updateOne(
+    const result = await mongodb.getDatabase().db().collection('students').updateOne(
       { _id: studentId },
       { $set: updatedStudent }
     );
@@ -97,7 +97,7 @@ const updateStudent = async (req, res) => {
 const deleteStudent = async (req, res) => {
   try {
     const studentId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().collection('students').deleteOne({ _id: studentId });
+    const result = await mongodb.getDatabase().db().collection('students').deleteOne({ _id: studentId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Student not found' });
