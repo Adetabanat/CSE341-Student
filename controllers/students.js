@@ -1,114 +1,53 @@
-const mongodb = require('../data/database');
-const { ObjectId } = require('mongodb');
+const Student = require('../models/student');
+const createError = require('http-errors');
 
-const getAllStudents = async (req, res) => {
-  try {
-    const students = await mongodb.getDatabase().collection('students').find().toArray();
-    res.status(200).json(students);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving students', error });
-  }
+const getAllStudents = async (req, res, next) => {
+    try {
+        const students = await Student.find();
+        res.status(200).json(students);
+    } catch (error) {
+        next(createError(500, 'Error retrieving students'));
+    }
 };
 
-const getStudentById = async (req, res) => {
-  try {
-    const studentId = new ObjectId(req.params.id);
-    const student = await mongodb.getDatabase().collection('students').findOne({ _id: studentId });
-
-    if (!student) {
-      return res.status(404).json({ message: 'Student not found' });
+const getStudentById = async (req, res, next) => {
+    try {
+        const student = await Student.findById(req.params.id);
+        if (!student) return next(createError(404, 'Student not found'));
+        res.status(200).json(student);
+    } catch (error) {
+        next(createError(500, 'Error retrieving student'));
     }
-    res.status(200).json(student);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving student', error });
-  }
 };
 
-const createStudent = async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      dateOfBirth,
-      age,
-      email,
-      homeTown,
-      studentClass,
-      house,
-      group,
-      parentName,
-      contact,
-    } = req.body;
-
-    // Validate required fields
-    if (
-      !firstName ||
-      !lastName ||
-      !dateOfBirth ||
-      !age ||
-      !email ||
-      !homeTown ||
-      !studentClass ||
-      !house ||
-      !group ||
-      !parentName ||
-      !contact
-    ) {
-      return res.status(400).json({ message: 'All fields are required' });
+const createStudent = async (req, res, next) => {
+    try {
+        const newStudent = new Student(req.body);
+        await newStudent.save();
+        res.status(201).json({ message: 'Student created', student: newStudent });
+    } catch (error) {
+        next(createError(500, 'Error creating student'));
     }
-
-    const newStudent = {
-      firstName,
-      lastName,
-      dateOfBirth,
-      age,
-      email,
-      homeTown,
-      studentClass,
-      house,
-      group,
-      parentName,
-      contact,
-    };
-
-    const result = await mongodb.getDatabase().collection('students').insertOne(newStudent);
-    res.status(201).json({ message: 'Student created', studentId: result.insertedId });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating student', error });
-  }
 };
 
-const updateStudent = async (req, res) => {
-  try {
-    const studentId = new ObjectId(req.params.id);
-    const updatedStudent = req.body;
-
-    const result = await mongodb.getDatabase().collection('students').updateOne(
-      { _id: studentId },
-      { $set: updatedStudent }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ message: 'Student not found' });
+const updateStudent = async (req, res, next) => {
+    try {
+        const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!student) return next(createError(404, 'Student not found'));
+        res.status(200).json({ message: 'Student updated', student });
+    } catch (error) {
+        next(createError(500, 'Error updating student'));
     }
-    res.status(200).json({ message: 'Student updated' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating student', error });
-  }
 };
 
-const deleteStudent = async (req, res) => {
-  try {
-    const studentId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().collection('students').deleteOne({ _id: studentId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Student not found' });
+const deleteStudent = async (req, res, next) => {
+    try {
+        const student = await Student.findByIdAndDelete(req.params.id);
+        if (!student) return next(createError(404, 'Student not found'));
+        res.status(200).json({ message: 'Student deleted' });
+    } catch (error) {
+        next(createError(500, 'Error deleting student'));
     }
-    res.status(200).json({ message: 'Student deleted' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting student', error });
-  }
 };
 
 module.exports = { getAllStudents, getStudentById, createStudent, updateStudent, deleteStudent };
