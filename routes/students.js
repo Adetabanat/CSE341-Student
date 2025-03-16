@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
-const studentController = require('../controllers/students');
-const validateStudent = require('../middleware/validation');
+const { getAllStudents, getStudentById, createStudent, updateStudent, deleteStudent } = require('../controllers/students');
 
-router.get('/', studentController.getAllStudents);
-router.get('/:id', studentController.getStudentById);
-router.post('/', validateStudent, studentController.createStudent);
-router.put('/:id', validateStudent, studentController.updateStudent);
-router.delete('/:id', studentController.deleteStudent);
+const router = express.Router();
+
+router.get('/', getAllStudents);
+router.get('/:id', getStudentById);
+router.post('/', createStudent);
+router.put('/:id', updateStudent);
+router.delete('/:id', deleteStudent);
 
 module.exports = router;

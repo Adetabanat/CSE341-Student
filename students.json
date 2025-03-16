@@ -1,0 +1,67 @@
+[
+  {
+    "firstName": "Johnny",
+    "lastName": "Doe",
+    "dateOfBirth": "2005-04-15",
+    "age": 19,
+    "email": "john.doe@example.com",
+    "homeTown": "Accra",
+    "studentClass": "Form 3",
+    "house": "Red House",
+    "group": "Science Club",
+    "parentName": "Mr. Michael Doe",
+    "contact": "+233501234567"
+  },
+  {
+    "firstName": "Sarah",
+    "lastName": "Mensah",
+    "dateOfBirth": "2006-06-22",
+    "age": 18,
+    "email": "sarah.mensah@example.com",
+    "homeTown": "Kumasi",
+    "studentClass": "Form 2",
+    "house": "Blue House",
+    "group": "Debate Club",
+    "parentName": "Mrs. Akosua Mensah",
+    "contact": "+233502345678"
+  },
+  {
+    "firstName": "Kwame",
+    "lastName": "Owusu",
+    "dateOfBirth": "2007-08-30",
+    "age": 17,
+    "email": "kwame.owusu@example.com",
+    "homeTown": "Cape Coast",
+    "studentClass": "Form 1",
+    "house": "Green House",
+    "group": "Drama Club",
+    "parentName": "Mr. Kofi Owusu",
+    "contact": "+233503456789"
+  },
+  {
+    "firstName": "Ama",
+    "lastName": "Baah",
+    "dateOfBirth": "2005-12-10",
+    "age": 19,
+    "email": "ama.baah@example.com",
+    "homeTown": "Tamale",
+    "studentClass": "Form 3",
+    "house": "Yellow House",
+    "group": "Music Club",
+    "parentName": "Mrs. Abena Baah",
+    "contact": "+233504567890"
+  },
+  {
+    "firstName": "David",
+    "lastName": "Asante",
+    "dateOfBirth": "2006-11-25",
+    "age": 18,
+    "email": "david.asante@example.com",
+    "homeTown": "Takoradi",
+    "studentClass": "Form 2",
+    "house": "Purple House",
+    "group": "Chess Club",
+    "parentName": "Mr. Yaw Asante",
+    "contact": "+233505678901"
+  }
+]

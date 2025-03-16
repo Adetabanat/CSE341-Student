@@ -1,21 +1,30 @@
 const express = require('express');
-const connectDB = require('./config/database');
-const studentsRoutes = require('./routes/students');
-const errorHandler = require('./middleware/errorHandler');
+const bodyParser = require('body-parser');
+const mongodb = require('./data/database');
 
 const app = express();
-app.use(express.json());
-app.use('/students', studentsRoutes);
+const port = process.env.PORT || 8080;
 
-// Handle 404 Errors
+// Middleware
+app.use(bodyParser.json()); // Parses JSON body
+
 app.use((req, res, next) => {
-    next(createError(404, 'Route Not Found'));
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
 });
 
-// Global Error Handler
-app.use(errorHandler);
+// Routes
+app.use('/', require('./routes'));
 
-connectDB();
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Connect to MongoDB and Start Server
+mongodb.initDb((err) => {
+    if (err) {
+        console.log(err);
+    } else {
+        app.listen(port, () => {
+            console.log(`Connected to DB and listening on port ${port}`);
+        });
+    }
+});
