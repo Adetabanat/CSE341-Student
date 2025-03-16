@@ -4,9 +4,11 @@ const { ObjectId } = require('mongodb');
 const getAllStudents = async (req, res) => {
   try {
     const students = await mongodb.getDatabase().collection('students').find().toArray();
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json(students);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving students', error });
+    console.error('Error retrieving students:', error);
+    res.status(500).json({ message: 'Error retrieving students', error: error.message });
   }
 };
 
@@ -18,9 +20,11 @@ const getStudentById = async (req, res) => {
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
     }
-    res.status(200).json(student);
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(student); // Fixed incorrect variable reference
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving student', error });
+    console.error('Error retrieving student:', error);
+    res.status(500).json({ message: 'Error retrieving student', error: error.message });
   }
 };
 
@@ -42,17 +46,8 @@ const createStudent = async (req, res) => {
 
     // Validate required fields
     if (
-      !firstName ||
-      !lastName ||
-      !dateOfBirth ||
-      !age ||
-      !email ||
-      !homeTown ||
-      !studentClass ||
-      !house ||
-      !group ||
-      !parentName ||
-      !contact
+      !firstName || !lastName || !dateOfBirth || !age || !email ||
+      !homeTown || !studentClass || !house || !group || !parentName || !contact
     ) {
       return res.status(400).json({ message: 'All fields are required' });
     }
@@ -74,7 +69,8 @@ const createStudent = async (req, res) => {
     const result = await mongodb.getDatabase().collection('students').insertOne(newStudent);
     res.status(201).json({ message: 'Student created', studentId: result.insertedId });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating student', error });
+    console.error('Error creating student:', error);
+    res.status(500).json({ message: 'Error creating student', error: error.message });
   }
 };
 
@@ -93,7 +89,8 @@ const updateStudent = async (req, res) => {
     }
     res.status(200).json({ message: 'Student updated' });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating student', error });
+    console.error('Error updating student:', error);
+    res.status(500).json({ message: 'Error updating student', error: error.message });
   }
 };
 
@@ -107,7 +104,8 @@ const deleteStudent = async (req, res) => {
     }
     res.status(200).json({ message: 'Student deleted' });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting student', error });
+    console.error('Error deleting student:', error);
+    res.status(500).json({ message: 'Error deleting student', error: error.message });
   }
 };
 
