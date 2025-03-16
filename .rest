@@ -1,30 +1,49 @@
 # REST API Test File for Student Records API
 
 ### Get all students
-GET http://localhost:8080/students
+GET http://localhost:8080/student
+
 
 ### Get a student by ID
-GET http://localhost:8080/students/{id}
+GET http://localhost:8080/student/67d5b7c0c28f40d9b5337b88
 
 ### Create a new student
-POST http://localhost:8080/students
+POST http://localhost:8080/student
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "johndoe@example.com",
-    "age": 25
+    "firstName": "Daniel",
+    "lastName": "Adongo",
+    "dateOfBirth": "2005-08-15",
+    "age": 19,
+    "email": "daniel.adongo@example.com",
+    "homeTown": "Accra",
+    "studentClass": "Form 3",
+    "house": "Red House",
+    "group": "Science Club",
+    "parentName": "Mr. Kofi Adongo",
+    "contact": "+233501234567"
 }
+
 
 ### Update a student by ID
-PUT http://localhost:8080/students/{id}
+PUT http://localhost:8080/student/67d5b7c0c28f40d9b5337b88
 Content-Type: application/json
 
 {
-    "name": "John Doe Updated",
-    "email": "johndoe_updated@example.com",
-    "age": 26
+    "firstName": "Daniel",
+    "lastName": "Adongo Nat",
+    "dateOfBirth": "2005-08-15",
+    "age": 19,
+    "email": "daniel.adongo@example.com",
+    "homeTown": "Accra",
+    "studentClass": "Form 3",
+    "house": "Red House",
+    "group": "Science Club",
+    "parentName": "Mr. Kofi Adongo",
+    "contact": "+233501234567"
 }
 
+
 ### Delete a student by ID
-DELETE http://localhost:8080/students/{id}
+DELETE http://localhost:8080/student/67d5b7c0c28f40d9b5337b89
