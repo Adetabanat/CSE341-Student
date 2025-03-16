@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const studentsController = require('../controllers/students'); // Ensure correct path
+const studentController = require('../controllers/students'); // Ensure the correct path
 
-router.get('/', studentsController.getAllStudents);
-router.get('/:id', studentsController.getStudentById);
-router.post('/', studentsController.createStudent);
-router.put('/:id', studentsController.updateStudent);
-router.delete('/:id', studentsController.deleteStudent);
+// Define routes
+router.get('/', studentController.getAll);
+router.get('/:id', studentController.getSingle);
+router.post('/', studentController.createStudent);
+router.put('/:id', studentController.updateStudent);
+router.delete('/:id', studentController.deleteStudent);
 
 module.exports = router;
