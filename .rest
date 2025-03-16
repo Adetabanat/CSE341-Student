@@ -1,0 +1,30 @@
+# REST API Test File for Student Records API
+
+### Get all students
+GET http://localhost:8080/students
+
+### Get a student by ID
+GET http://localhost:8080/students/{id}
+
+### Create a new student
+POST http://localhost:8080/students
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "age": 25
+}
+
+### Update a student by ID
+PUT http://localhost:8080/students/{id}
+Content-Type: application/json
+
+{
+    "name": "John Doe Updated",
+    "email": "johndoe_updated@example.com",
+    "age": 26
+}
+
+### Delete a student by ID
+DELETE http://localhost:8080/students/{id}
