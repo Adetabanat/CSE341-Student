@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const studentsController = require('../controllers/studentsController');
+const studentsController = require('../controllers/students');
 
 // API Endpoints
 router.get('/', studentsController.getAllStudents);
