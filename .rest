@@ -1,8 +1,7 @@
-# REST API Test File for Student Records API
+# REST API Test File for Student and Teacher Records API
 
 ### Get all students
 GET http://localhost:8080/students
-
 
 ### Get a student by ID
 GET http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
@@ -25,7 +24,6 @@ Content-Type: application/json
     "contact": "+233501234567"
 }
 
-
 ### Update a student by ID
 PUT http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
 Content-Type: application/json
@@ -44,6 +42,47 @@ Content-Type: application/json
     "contact": "+233501234567"
 }
 
-
 ### Delete a student by ID
 DELETE http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
+
+
+# ==========================
+# TEACHERS ENDPOINTS
+# ==========================
+
+### Get all teachers
+GET http://localhost:8080/teachers
+
+### Get a teacher by ID
+GET http://localhost:8080/teachers/78d6c8d1e39f50e8a6459a99
+
+### Create a new teacher
+POST http://localhost:8080/teachers
+Content-Type: application/json
+
+{
+    "firstName": "Ron",
+    "lastName": "Max",
+    "email": "john.doe@example.com",
+    "subject": "Mathematics",
+    "yearsOfExperience": 10,
+    "contact": "+233501987654",
+    "address": "123 School Street, Accra"
+}
+
+### Update a teacher by ID
+PUT http://localhost:8080/teachers/67d7ff4032eec8ac588813b9
+Content-Type: application/json
+
+{
+    "firstName": "Bright",
+    "lastName": "Fort",
+    "email": "john.doe@example.com",
+    "subject": "Physics",
+    "yearsOfExperience": 12,
+    "contact": "+233501987654",
+    "address": "123 School Street, Accra"
+}
+
+### Delete a teacher by ID
+DELETE http://localhost:8080/teachers/78d6c8d1e39f50e8a6459a99

@@ -5,7 +5,7 @@
     "description": "API for managing student and teacher records",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "cse341-student.onrender.com",
   "basePath": "/",
   "schemes": ["http", "https"],
   "paths": {
