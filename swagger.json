@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Student Records API",
-    "description": "API for managing student records",
+    "description": "API for managing student and teacher records",
     "version": "1.0.0"
   },
   "host": "localhost:8080",
@@ -66,7 +66,6 @@
     "/students/{id}": {
       "get": {
         "description": "Fetches details of a specific student",
-        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -91,9 +90,7 @@
         }
       },
       "put": {
-        "description": "Updates one or more fields of an existing student record",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "description": "Updates a student record",
         "parameters": [
           {
             "name": "id",
@@ -128,7 +125,7 @@
             "description": "Student updated successfully"
           },
           "400": {
-            "description": "Invalid student ID format or missing update fields"
+            "description": "Invalid student ID format or missing fields"
           },
           "404": {
             "description": "Student not found"
@@ -139,7 +136,7 @@
         }
       },
       "delete": {
-        "description": "Removes a student record from the database",
+        "description": "Removes a student record",
         "parameters": [
           {
             "name": "id",
@@ -157,6 +154,149 @@
           },
           "404": {
             "description": "Student not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/teachers/": {
+      "get": {
+        "description": "Fetches a list of all teachers in the database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of teachers"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "Adds a new teacher record",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" },
+                "yearsOfExperience": { "type": "integer" },
+                "contact": { "type": "string" },
+                "address": { "type": "string" }
+              },
+              "required": ["firstName", "lastName", "email", "subject", "yearsOfExperience", "contact", "address"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Teacher created successfully"
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/teachers/{id}": {
+      "get": {
+        "description": "Fetches details of a specific teacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved teacher details"
+          },
+          "400": {
+            "description": "Invalid teacher ID format"
+          },
+          "404": {
+            "description": "Teacher not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a teacher record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" },
+                "yearsOfExperience": { "type": "integer" },
+                "contact": { "type": "string" },
+                "address": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teacher updated successfully"
+          },
+          "400": {
+            "description": "Invalid teacher ID format or missing fields"
+          },
+          "404": {
+            "description": "Teacher not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Removes a teacher record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teacher deleted successfully"
+          },
+          "400": {
+            "description": "Invalid teacher ID format"
+          },
+          "404": {
+            "description": "Teacher not found"
           },
           "500": {
             "description": "Internal Server Error"
