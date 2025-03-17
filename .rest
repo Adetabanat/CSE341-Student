@@ -1,14 +1,14 @@
 # REST API Test File for Student Records API
 
 ### Get all students
-GET http://localhost:8080/student
+GET http://localhost:8080/students
 
 
 ### Get a student by ID
-GET http://localhost:8080/student/67d5b7c0c28f40d9b5337b88
+GET http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
 
 ### Create a new student
-POST http://localhost:8080/student
+POST http://localhost:8080/students
 Content-Type: application/json
 
 {
@@ -27,12 +27,12 @@ Content-Type: application/json
 
 
 ### Update a student by ID
-PUT http://localhost:8080/student/67d5b7c0c28f40d9b5337b88
+PUT http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
 Content-Type: application/json
 
 {
     "firstName": "Daniel",
-    "lastName": "Adongo Nat",
+    "lastName": "Adongo Nat bee",
     "dateOfBirth": "2005-08-15",
     "age": 19,
     "email": "daniel.adongo@example.com",
@@ -46,4 +46,4 @@ Content-Type: application/json
 
 
 ### Delete a student by ID
-DELETE http://localhost:8080/student/67d5b7c0c28f40d9b5337b89
+DELETE http://localhost:8080/students/67d5b7c0c28f40d9b5337b88

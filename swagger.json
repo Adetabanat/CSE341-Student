@@ -1,43 +1,21 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
-    "description": "Student Record API",
+    "title": "Student Records API",
+    "description": "API for managing student records",
     "version": "1.0.0"
   },
   "host": "localhost:8080",
   "basePath": "/",
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "paths": {
-    "/": {
+    "/students/": {
       "get": {
-        "description": "",
+        "description": "Fetches a list of all students in the database",
+        "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api-docs": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/student/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
+            "description": "Successfully retrieved list of students"
           },
           "500": {
             "description": "Internal Server Error"
@@ -45,57 +23,39 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Adds a new student record to the database",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "student",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "dateOfBirth": {
-                  "example": "any"
-                },
-                "age": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "homeTown": {
-                  "example": "any"
-                },
-                "studentClass": {
-                  "example": "any"
-                },
-                "house": {
-                  "example": "any"
-                },
-                "group": {
-                  "example": "any"
-                },
-                "parentName": {
-                  "example": "any"
-                },
-                "contact": {
-                  "example": "any"
-                }
-              }
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "dateOfBirth": { "type": "string", "format": "date" },
+                "age": { "type": "integer" },
+                "email": { "type": "string", "format": "email" },
+                "homeTown": { "type": "string" },
+                "studentClass": { "type": "string" },
+                "house": { "type": "string" },
+                "group": { "type": "string" },
+                "parentName": { "type": "string" },
+                "contact": { "type": "string" }
+              },
+              "required": ["firstName", "lastName", "dateOfBirth", "age", "email", "homeTown", "studentClass", "house", "group", "parentName", "contact"]
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Student created successfully"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request - Invalid input data"
           },
           "500": {
             "description": "Internal Server Error"
@@ -103,9 +63,10 @@
         }
       }
     },
-    "/student/{id}": {
+    "/students/{id}": {
       "get": {
-        "description": "",
+        "description": "Fetches details of a specific student",
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -116,10 +77,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Successfully retrieved student details"
+          },
+          "400": {
+            "description": "Invalid student ID format"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Student not found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -127,21 +91,47 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Updates one or more fields of an existing student record",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "student",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "dateOfBirth": { "type": "string", "format": "date" },
+                "age": { "type": "integer" },
+                "email": { "type": "string", "format": "email" },
+                "homeTown": { "type": "string" },
+                "studentClass": { "type": "string" },
+                "house": { "type": "string" },
+                "group": { "type": "string" },
+                "parentName": { "type": "string" },
+                "contact": { "type": "string" }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Student updated successfully"
+          },
+          "400": {
+            "description": "Invalid student ID format or missing update fields"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Student not found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -149,7 +139,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Removes a student record from the database",
         "parameters": [
           {
             "name": "id",
@@ -160,10 +150,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Student deleted successfully"
+          },
+          "400": {
+            "description": "Invalid student ID format"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Student not found"
           },
           "500": {
             "description": "Internal Server Error"
