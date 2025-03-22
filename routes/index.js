@@ -1,10 +1,9 @@
 const router = require('express').Router();
-const passport = require('passport');
+const passport = require('passport'); // ✅ Import passport
 
 router.use('/', require('./swagger'));
-
-router.use('/students', isAuthenticated, require('./students'));
-router.use('/teachers', isAuthenticated, require('./teachers'));
+router.use('/students', require('./students'));
+router.use('/teachers', require('./teachers'));
 
 router.get("/login", passport.authenticate("github"), (req, res) => { });
 

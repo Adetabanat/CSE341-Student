@@ -1,6 +1,5 @@
-const express = require('express');
-const router = express.Router();
-const teachersController = require('../controllers/teachers');
+const router = require('express').Router();
+const teachersController = require('../controllers/teachers'); // Ensure the correct path
 const { isAuthenticated } = require('../middleware/authenticate');
 
 router.get('/', isAuthenticated, teachersController.getAllTeachers);
