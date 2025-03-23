@@ -8,35 +8,14 @@
   "host": "cse341-student.onrender.com",
   "basePath": "/",
   "schemes": ["https"],
-  "securityDefinitions": {
-    "oauth2": {
-      "type": "oauth2",
-      "flow": "implicit",
-      "authorizationUrl": "https://github.com/login/oauth/authorize",
-      "scopes": {
-        "read:students": "Read student records",
-        "write:students": "Modify student records",
-        "read:teachers": "Read teacher records",
-        "write:teachers": "Modify teacher records"
-      }
-    }
-  },
   "paths": {
     "/students/": {
       "get": {
         "description": "Fetches a list of all students in the database",
         "produces": ["application/json"],
-        "security": [
-          {
-            "oauth2": ["read:students"]
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successfully retrieved list of students"
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing access token"
           },
           "500": {
             "description": "Internal Server Error"
@@ -44,13 +23,9 @@
         }
       },
       "post": {
-        "description": "Adds a new student record",
+        "description": "Adds a new student record to the database",
         "consumes": ["application/json"],
-        "security": [
-          {
-            "oauth2": ["write:students"]
-          }
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -71,10 +46,7 @@
                 "parentName": { "type": "string" },
                 "contact": { "type": "string" }
               },
-              "required": [
-                "firstName", "lastName", "dateOfBirth", "age", "email",
-                "homeTown", "studentClass", "house", "group", "parentName", "contact"
-              ]
+              "required": ["firstName", "lastName", "dateOfBirth", "age", "email", "homeTown", "studentClass", "house", "group", "parentName", "contact"]
             }
           }
         ],
@@ -85,8 +57,246 @@
           "400": {
             "description": "Bad Request - Invalid input data"
           },
-          "401": {
-            "description": "Unauthorized - Invalid or missing access token"
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/students/{id}": {
+      "get": {
+        "description": "Fetches details of a specific student",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved student details"
+          },
+          "400": {
+            "description": "Invalid student ID format"
+          },
+          "404": {
+            "description": "Student not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a student record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "student",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "dateOfBirth": { "type": "string", "format": "date" },
+                "age": { "type": "integer" },
+                "email": { "type": "string", "format": "email" },
+                "homeTown": { "type": "string" },
+                "studentClass": { "type": "string" },
+                "house": { "type": "string" },
+                "group": { "type": "string" },
+                "parentName": { "type": "string" },
+                "contact": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student updated successfully"
+          },
+          "400": {
+            "description": "Invalid student ID format or missing fields"
+          },
+          "404": {
+            "description": "Student not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Removes a student record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student deleted successfully"
+          },
+          "400": {
+            "description": "Invalid student ID format"
+          },
+          "404": {
+            "description": "Student not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/teachers/": {
+      "get": {
+        "description": "Fetches a list of all teachers in the database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of teachers"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "Adds a new teacher record",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" },
+                "yearsOfExperience": { "type": "integer" },
+                "contact": { "type": "string" },
+                "address": { "type": "string" }
+              },
+              "required": ["firstName", "lastName", "email", "subject", "yearsOfExperience", "contact", "address"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Teacher created successfully"
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/teachers/{id}": {
+      "get": {
+        "description": "Fetches details of a specific teacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved teacher details"
+          },
+          "400": {
+            "description": "Invalid teacher ID format"
+          },
+          "404": {
+            "description": "Teacher not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a teacher record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" },
+                "yearsOfExperience": { "type": "integer" },
+                "contact": { "type": "string" },
+                "address": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teacher updated successfully"
+          },
+          "400": {
+            "description": "Invalid teacher ID format or missing fields"
+          },
+          "404": {
+            "description": "Teacher not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Removes a teacher record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teacher deleted successfully"
+          },
+          "400": {
+            "description": "Invalid teacher ID format"
+          },
+          "404": {
+            "description": "Teacher not found"
           },
           "500": {
             "description": "Internal Server Error"
