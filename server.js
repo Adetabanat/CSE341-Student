@@ -66,17 +66,7 @@ app.get('/profile', ensureAuthenticated, (req, res) => {
   res.json({ message: 'Welcome to your profile', user: req.user });
 });
 
-// Logout
-app.get('/logout', async (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    req.session.destroy(() => {
-      res.redirect('/');
-    });
-  });
-});
+
 // Protected route middleware
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
