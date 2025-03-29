@@ -5,6 +5,10 @@ router.use('/', require('./swagger'));
 router.use('/students', require('./students'));
 router.use('/teachers', require('./teachers'));
 
+router.get("/", (req, res) => {
+    res.send("Welcome to my API");
+});
+
 router.get("/login", passport.authenticate("github"), (req, res) => { });
 
 router.get("/logout", function (req, res, next) {
