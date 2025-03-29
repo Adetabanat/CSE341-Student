@@ -45,6 +45,11 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
+// Login Route (Redirects to GitHub authentication)
+app.get('/login', (req, res) => {
+  res.redirect('/auth/github');
+});
+
 // GitHub Auth Routes
 app.get('/auth/github', passport.authenticate('github', { scope: ['user'] }));
 
@@ -55,6 +60,11 @@ app.get(
     res.redirect('/profile');
   }
 );
+
+// Profile Route (Requires Authentication)
+app.get('/profile', ensureAuthenticated, (req, res) => {
+  res.json({ message: 'Welcome to your profile', user: req.user });
+});
 
 // Logout
 app.get('/logout', (req, res, next) => {
@@ -67,12 +77,12 @@ app.get('/logout', (req, res, next) => {
 });
 
 // Protected route middleware
-const ensureAuthenticated = (req, res, next) => {
+function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.status(401).json({ message: 'Unauthorized. Please log in.' });
-};
+}
 
 // Protected API routes for Students
 app.get('/students', ensureAuthenticated, (req, res) => {

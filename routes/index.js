@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport'); // ✅ Import passport
+const passport = require('passport'); 
 
 router.use('/', require('./swagger'));
 router.use('/students', require('./students'));
