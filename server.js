@@ -2,11 +2,14 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
-const dotenv = require('dotenv');
+const dotenv = require('dotenv');const bodyParser = require('body-parser');
+const mongodb = require('./data/database');
+
 
 dotenv.config(); // Load environment variables
 
 const app = express();
+const port = process.env.PORT || 8080;
 const routes = require('./routes/index'); // Import the routes
 
 // Middleware to parse JSON
@@ -50,7 +53,13 @@ passport.deserializeUser((obj, done) => {
 
 // Use Routes
 app.use('/', routes);
-
-// Start Server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Connect to MongoDB and Start Server
+mongodb.initDb((err) => {
+  if (err) {
+      console.log(err);
+  } else {
+      app.listen(port, () => {
+          console.log(`Connected to DB and listening on port ${port}`);
+      });
+  }
+});
