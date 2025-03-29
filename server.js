@@ -3,11 +3,14 @@ const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const dotenv = require('dotenv');
+const mongodb = require('./data/database'); // Ensure this file exports an initDb() function
 
 dotenv.config(); // Load environment variables
 
 const app = express();
 const routes = require('./routes/index'); // Import the routes
+
+const PORT = process.env.PORT || 8080; // Define the port
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -51,6 +54,13 @@ passport.deserializeUser((obj, done) => {
 // Use Routes
 app.use('/', routes);
 
-// Start Server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Connect to MongoDB and Start Server
+mongodb.initDb((err) => {
+  if (err) {
+    console.error('❌ Database connection failed:', err);
+  } else {
+    app.listen(PORT, () => {
+      console.log(`✅ Connected to DB and listening on port ${PORT}`);
+    });
+  }
+});
