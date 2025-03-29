@@ -67,15 +67,16 @@ app.get('/profile', ensureAuthenticated, (req, res) => {
 });
 
 // Logout
-app.get('/logout', (req, res, next) => {
-  req.logout((err) => {
+app.get('/logout', async (req, res, next) => {
+  req.logout(function (err) {
     if (err) {
       return next(err);
     }
-    res.redirect('/');
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
   });
 });
-
 // Protected route middleware
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
