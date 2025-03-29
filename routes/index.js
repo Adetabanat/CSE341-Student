@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const passport = require('passport');
+
+const router = express.Router();
 
 // Import other route files
 router.use('/students', require('./students'));
@@ -12,15 +13,15 @@ router.get('/', (req, res) => {
   res.send('Welcome to my API');
 });
 
-// Login Route (Redirects to GitHub authentication)
-router.get('/login', passport.authenticate('github'));
+// GitHub Login Route
+router.get('/login', passport.authenticate('github', { scope: ['user'] }));
 
-// GitHub Callback Route (After login)
+// GitHub OAuth Callback Route
 router.get(
   '/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect('/profile');
+    res.redirect('/profile'); // Redirect after successful login
   }
 );
 
@@ -32,19 +33,16 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
 // Logout Route
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
+    
     req.session.destroy((err) => {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       res.redirect('/');
     });
   });
 });
 
-// Middleware to ensure authentication
+// Middleware to check authentication
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
