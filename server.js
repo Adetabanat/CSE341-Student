@@ -2,18 +2,28 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
-const dotenv = require('dotenv');const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
 const mongodb = require('./data/database');
-
 
 dotenv.config(); // Load environment variables
 
 const app = express();
 const port = process.env.PORT || 8080;
+
 const routes = require('./routes/index'); // Import the routes
 
 // Middleware to parse JSON
-app.use(express.json());
+// Middleware
+app.use(bodyParser.json()); // Parses JSON body
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
+
 
 // Session configuration
 app.use(
