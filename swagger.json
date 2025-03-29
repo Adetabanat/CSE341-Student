@@ -26,7 +26,6 @@
       "get": {
         "description": "Fetches a list of all students in the database",
         "produces": ["application/json"],
-        "security": [{ "GitHubOAuth": [] }],
         "responses": {
           "200": { "description": "Successfully retrieved list of students" },
           "401": { "description": "Unauthorized" },
@@ -73,7 +72,6 @@
             }
           }
         ],
-        "security": [{ "GitHubOAuth": [] }],
         "responses": {
           "201": { "description": "Student created successfully" },
           "400": { "description": "Bad Request - Invalid input data" },
@@ -88,7 +86,6 @@
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
-        "security": [{ "GitHubOAuth": [] }],
         "responses": {
           "200": { "description": "Successfully retrieved student details" },
           "400": { "description": "Invalid student ID format" },
@@ -102,21 +99,106 @@
       "get": {
         "description": "Fetches a list of all teachers in the database",
         "produces": ["application/json"],
-        "security": [{ "GitHubOAuth": [] }],
         "responses": {
           "200": { "description": "Successfully retrieved list of teachers" },
           "401": { "description": "Unauthorized" },
           "500": { "description": "Internal Server Error" }
         }
+      },
+      "post": {
+        "description": "Adds a new teacher record to the database",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" },
+                "yearsOfExperience": { "type": "integer" },
+                "phoneNumber": { "type": "string" }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "subject",
+                "yearsOfExperience",
+                "phoneNumber"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Teacher created successfully" },
+          "400": { "description": "Bad Request - Invalid input data" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
       }
     },
-    "/api/students": {
+    "/teachers/{id}": {
       "get": {
-        "summary": "Get student records",
-        "security": [{ "GitHubOAuth": [] }],
+        "description": "Fetches details of a specific teacher",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
         "responses": {
-          "200": { "description": "Success" },
-          "401": { "description": "Unauthorized" }
+          "200": { "description": "Successfully retrieved teacher details" },
+          "400": { "description": "Invalid teacher ID format" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Teacher not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "description": "Updates a specific teacher's record",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" },
+                "yearsOfExperience": { "type": "integer" },
+                "phoneNumber": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Teacher updated successfully" },
+          "400": { "description": "Bad Request - Invalid input data" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Teacher not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "description": "Deletes a specific teacher's record",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "204": { "description": "Teacher deleted successfully" },
+          "400": { "description": "Invalid teacher ID format" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Teacher not found" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     }
