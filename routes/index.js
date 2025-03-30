@@ -18,24 +18,12 @@ router.get('/', (req, res) => {
 router.get('/login', passport.authenticate('github', { scope: ['user:email'] }));
 
 // GitHub OAuth Callback Route (Ensuring user is stored in session)
-router.get('/auth/github/callback', 
-    passport.authenticate('github', { failureRedirect: '/' }), 
-    (req, res) => {
-        console.log("GitHub Callback User:", req.user);
-        req.session.user = req.user; // Store user in session
-        res.redirect('/profile'); // Redirect to profile page after login
-    }
-);
+
 
 // GitHub Logout Route (Fix session clearing)
-router.get('/logout', (req, res, next) => {
-    req.logout((err) => {
+router.get('/logout', function (req, res, next)  {
+    req.logout(function (err) {
         if (err) return next(err);
-        req.session.destroy((err) => {
-            if (err) return next(err);
-            res.clearCookie('connect.sid'); // Ensure session cookie is removed
-            res.redirect('/');
-        });
     });
 });
 

@@ -22,18 +22,19 @@ app
     .use(passport.initialize())
     .use(passport.session())
     .use(cors({
-        origin: 'http://localhost:8080', // Adjust to your frontend URL
+        origin: '*', // Adjust to your frontend URL
         credentials: true, // Allow credentials for session cookies
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
     }))
+
     .use((req, res, next) => {
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080'); // Adjust for frontend
+        res.setHeader('Access-Control-Allow-Origin', '*'); // Adjust for frontend
         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow session cookies
         next();
     })
-    .use("/", routes); // Fixed route usage
+    .use("/", require("./routes/index.js")); // Fixed route usage
 
 // GitHub OAuth Strategy
 passport.use(new GitHubStrategy({
@@ -63,7 +64,7 @@ app.get('/', (req, res) => {
 
 // GitHub OAuth Callback Route (Ensures session is set)
 app.get('/github/callback', 
-    passport.authenticate('github', { failureRedirect: '/' }),
+    passport.authenticate('github', { failureRedirect: '/api-docs', session: false}),
     (req, res) => {
         console.log("User authenticated:", req.user);
         req.session.user = req.user;
