@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 // GitHub Login Route
-router.get('/login', passport.authenticate('github'));
+router.get('/login', passport.authenticate('github', { scope: ['user:email'] }));
 
 // GitHub OAuth Callback Route (Ensuring user is stored in session)
 router.get('/auth/github/callback', 
