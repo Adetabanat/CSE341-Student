@@ -11,7 +11,7 @@
   "securityDefinitions": {
     "GitHubOAuth": {
       "type": "oauth2",
-      "flow": "implicit",
+      "flow": "authorizationCode",
       "authorizationUrl": "https://github.com/login/oauth/authorize",
       "tokenUrl": "https://github.com/login/oauth/access_token",
       "scopes": {
@@ -62,9 +62,7 @@
     "/students/{id}": {
       "get": {
         "description": "Get a student by ID",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
         "responses": {
           "200": { "description": "Student details retrieved" },
           "400": { "description": "Invalid student ID" },
@@ -100,14 +98,97 @@
       },
       "delete": {
         "description": "Delete a student",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
         "responses": {
           "204": { "description": "Student deleted" },
           "400": { "description": "Invalid student ID" },
           "401": { "description": "Unauthorized" },
           "404": { "description": "Student not found" }
+        }
+      }
+    },
+    "/teachers": {
+      "get": {
+        "description": "Fetch all teachers",
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "List of teachers retrieved successfully" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "description": "Add a new teacher",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" }
+              },
+              "required": ["firstName", "lastName", "email", "subject"]
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Teacher created successfully" },
+          "400": { "description": "Invalid input data" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/teachers/{id}": {
+      "get": {
+        "description": "Get a teacher by ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": {
+          "200": { "description": "Teacher details retrieved" },
+          "400": { "description": "Invalid teacher ID" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Teacher not found" }
+        }
+      },
+      "put": {
+        "description": "Update teacher details",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "in": "body",
+            "name": "teacher",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "subject": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Teacher updated successfully" },
+          "400": { "description": "Invalid input data" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Teacher not found" }
+        }
+      },
+      "delete": {
+        "description": "Delete a teacher",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": {
+          "204": { "description": "Teacher deleted" },
+          "400": { "description": "Invalid teacher ID" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Teacher not found" }
         }
       }
     }

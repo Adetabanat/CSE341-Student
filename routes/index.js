@@ -5,7 +5,7 @@ const { isAuthenticated } = require('../middleware/isAuthenticated');
 const router = express.Router();
 
 // Import other route files
-router.use('/', require('./swagger'));  
+router.use('/', isAuthenticated, require('./swagger'));  
 router.use('/students', isAuthenticated, require('./students')); // Protected Route
 router.use('/teachers', isAuthenticated, require('./teachers')); // Protected Route
 
