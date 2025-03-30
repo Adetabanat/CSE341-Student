@@ -11,12 +11,11 @@
   "securityDefinitions": {
     "GitHubOAuth": {
       "type": "oauth2",
-      "flow": "accessCode",
+      "flow": "authorizationCode",
       "authorizationUrl": "https://github.com/login/oauth/authorize",
       "tokenUrl": "https://github.com/login/oauth/access_token",
       "scopes": {
-        "user": "Access user profile",
-        "repo": "Access public repositories"
+        "read:user": "Access user profile information"
       }
     }
   },
@@ -24,18 +23,17 @@
   "paths": {
     "/students": {
       "get": {
-        "description": "Fetches a list of all students in the database",
+        "description": "Fetch all students",
         "produces": ["application/json"],
         "responses": {
-          "200": { "description": "Successfully retrieved list of students" },
+          "200": { "description": "List of students retrieved successfully" },
           "401": { "description": "Unauthorized" },
           "500": { "description": "Internal Server Error" }
         }
       },
       "post": {
-        "description": "Adds a new student record to the database",
+        "description": "Add a new student",
         "consumes": ["application/json"],
-        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -47,138 +45,40 @@
                 "firstName": { "type": "string" },
                 "lastName": { "type": "string" },
                 "dateOfBirth": { "type": "string", "format": "date" },
-                "age": { "type": "integer" },
                 "email": { "type": "string", "format": "email" },
-                "homeTown": { "type": "string" },
-                "studentClass": { "type": "string" },
-                "house": { "type": "string" },
-                "group": { "type": "string" },
-                "parentName": { "type": "string" },
-                "contact": { "type": "string" }
+                "studentClass": { "type": "string" }
               },
-              "required": [
-                "firstName",
-                "lastName",
-                "dateOfBirth",
-                "age",
-                "email",
-                "homeTown",
-                "studentClass",
-                "house",
-                "group",
-                "parentName",
-                "contact"
-              ]
+              "required": ["firstName", "lastName", "dateOfBirth", "email", "studentClass"]
             }
           }
         ],
         "responses": {
           "201": { "description": "Student created successfully" },
-          "400": { "description": "Bad Request - Invalid input data" },
-          "401": { "description": "Unauthorized" },
-          "500": { "description": "Internal Server Error" }
+          "400": { "description": "Invalid input data" },
+          "401": { "description": "Unauthorized" }
         }
       }
     },
     "/students/{id}": {
       "get": {
-        "description": "Fetches details of a specific student",
+        "description": "Get a student by ID",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
-          "200": { "description": "Successfully retrieved student details" },
-          "400": { "description": "Invalid student ID format" },
+          "200": { "description": "Student details retrieved" },
+          "400": { "description": "Invalid student ID" },
           "401": { "description": "Unauthorized" },
-          "404": { "description": "Student not found" },
-          "500": { "description": "Internal Server Error" }
-        }
-      },
-      "delete": {
-        "description": "Deletes a specific student record",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
-        ],
-        "responses": {
-          "204": { "description": "Student deleted successfully" },
-          "400": { "description": "Invalid student ID format" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Student not found" },
-          "500": { "description": "Internal Server Error" }
-        }
-      }
-    },
-    "/teachers": {
-      "get": {
-        "description": "Fetches a list of all teachers in the database",
-        "produces": ["application/json"],
-        "responses": {
-          "200": { "description": "Successfully retrieved list of teachers" },
-          "401": { "description": "Unauthorized" },
-          "500": { "description": "Internal Server Error" }
-        }
-      },
-      "post": {
-        "description": "Adds a new teacher record to the database",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "teacher",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": { "type": "string" },
-                "lastName": { "type": "string" },
-                "email": { "type": "string", "format": "email" },
-                "subject": { "type": "string" },
-                "yearsOfExperience": { "type": "integer" },
-                "phoneNumber": { "type": "string" }
-              },
-              "required": [
-                "firstName",
-                "lastName",
-                "email",
-                "subject",
-                "yearsOfExperience",
-                "phoneNumber"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "201": { "description": "Teacher created successfully" },
-          "400": { "description": "Bad Request - Invalid input data" },
-          "401": { "description": "Unauthorized" },
-          "500": { "description": "Internal Server Error" }
-        }
-      }
-    },
-    "/teachers/{id}": {
-      "get": {
-        "description": "Fetches details of a specific teacher",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
-        ],
-        "responses": {
-          "200": { "description": "Successfully retrieved teacher details" },
-          "400": { "description": "Invalid teacher ID format" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Teacher not found" },
-          "500": { "description": "Internal Server Error" }
+          "404": { "description": "Student not found" }
         }
       },
       "put": {
-        "description": "Updates a specific teacher's record",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "description": "Update student details",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" },
           {
             "in": "body",
-            "name": "teacher",
+            "name": "student",
             "required": true,
             "schema": {
               "type": "object",
@@ -186,32 +86,28 @@
                 "firstName": { "type": "string" },
                 "lastName": { "type": "string" },
                 "email": { "type": "string", "format": "email" },
-                "subject": { "type": "string" },
-                "yearsOfExperience": { "type": "integer" },
-                "phoneNumber": { "type": "string" }
+                "studentClass": { "type": "string" }
               }
             }
           }
         ],
         "responses": {
-          "200": { "description": "Teacher updated successfully" },
-          "400": { "description": "Bad Request - Invalid input data" },
+          "200": { "description": "Student updated successfully" },
+          "400": { "description": "Invalid input data" },
           "401": { "description": "Unauthorized" },
-          "404": { "description": "Teacher not found" },
-          "500": { "description": "Internal Server Error" }
+          "404": { "description": "Student not found" }
         }
       },
       "delete": {
-        "description": "Deletes a specific teacher's record",
+        "description": "Delete a student",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
-          "204": { "description": "Teacher deleted successfully" },
-          "400": { "description": "Invalid teacher ID format" },
+          "204": { "description": "Student deleted" },
+          "400": { "description": "Invalid student ID" },
           "401": { "description": "Unauthorized" },
-          "404": { "description": "Teacher not found" },
-          "500": { "description": "Internal Server Error" }
+          "404": { "description": "Student not found" }
         }
       }
     }

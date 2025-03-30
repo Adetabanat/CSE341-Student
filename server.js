@@ -22,7 +22,7 @@ app
     .use(passport.initialize())
     .use(passport.session())
     .use(cors({
-        origin: 'http://localhost:3000', // Adjust to your frontend URL
+        origin: 'http://localhost:8080', // Adjust to your frontend URL
         credentials: true, // Allow credentials for session cookies
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
     }))
