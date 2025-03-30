@@ -9,7 +9,7 @@ const mongodb = require('./data/database');
 
 const app = express();
 const port = process.env.PORT || 8080;
-const routes = require('./routes/index'); // Import the routes
+
 
 // Middleware
 app
@@ -23,7 +23,6 @@ app
     .use(passport.session())
     .use(cors({
         origin: '*', // Adjust to your frontend URL
-        credentials: true, // Allow credentials for session cookies
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
     }))
 
@@ -57,16 +56,12 @@ passport.deserializeUser((user, done) => {
 });
 
 // Debugging: Check if session is storing user info
-app.get('/', (req, res) => {
-    console.log("Session user:", req.session.user);
-    res.send(req.session.user ? `Logged in as ${req.session.user.displayName}` : "Logged out");
-});
+app.get('/', (req, res) => {res.send(req.session.user !== undefined ? `Logged in as ${req.session.user.displayName}` : "Logged out")});
 
 // GitHub OAuth Callback Route (Ensures session is set)
 app.get('/github/callback', 
-    passport.authenticate('github', { failureRedirect: '/api-docs', session: false}),
+    passport.authenticate('github', { failureRedirect: '/api-docs', session: true}),
     (req, res) => {
-        console.log("User authenticated:", req.user);
         req.session.user = req.user;
         res.redirect('/');
     }

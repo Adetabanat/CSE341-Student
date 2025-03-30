@@ -5,9 +5,10 @@ const { isAuthenticated } = require('../middleware/isAuthenticated');
 const router = express.Router();
 
 // Import other route files
+router.use('/', require('./swagger'));  
 router.use('/students', isAuthenticated, require('./students')); // Protected Route
 router.use('/teachers', isAuthenticated, require('./teachers')); // Protected Route
-router.use('/', require('./swagger'));
+
 
 // Home route
 router.get('/', (req, res) => {
@@ -23,7 +24,8 @@ router.get('/login', passport.authenticate('github', { scope: ['user:email'] }))
 // GitHub Logout Route (Fix session clearing)
 router.get('/logout', function (req, res, next)  {
     req.logout(function (err) {
-        if (err) return next(err);
+     if (err) {return next(err);}
+     res.redirect('/');
     });
 });
 
