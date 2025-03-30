@@ -46,11 +46,11 @@ app
 
 // Serialize and deserialize user
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
+passport.deserializeUser((id, done) => {
+    done(null, {id});
 });
 
 // Debugging: Check if session is storing user info
@@ -61,7 +61,7 @@ app.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/api-docs', session: true}),
     (req, res) => {
         req.session.user = req.user;
-        res.redirect('/');
+        res.redirect('/api-docs');
     }
 );
 
