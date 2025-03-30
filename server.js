@@ -13,22 +13,27 @@ const routes = require('./routes/index'); // Import the routes
 
 // Middleware
 app
-  .use(bodyParser.json()) // Parses JSON body
-  .use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false, // Changed to false to prevent empty sessions
-  }))
-  .use(passport.initialize())
-  .use(passport.session())
-  .use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'] }))
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    next();
-  })
-  .use("/", routes); // Fixed route usage
+    .use(bodyParser.json()) // Parses JSON body
+    .use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true, // Set to true for debugging session persistence
+    }))
+    .use(passport.initialize())
+    .use(passport.session())
+    .use(cors({
+        origin: 'http://localhost:3000', // Adjust to your frontend URL
+        credentials: true, // Allow credentials for session cookies
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
+    }))
+    .use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Adjust for frontend
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow session cookies
+        next();
+    })
+    .use("/", routes); // Fixed route usage
 
 // GitHub OAuth Strategy
 passport.use(new GitHubStrategy({
@@ -43,34 +48,36 @@ passport.use(new GitHubStrategy({
 
 // Serialize and deserialize user
 passport.serializeUser((user, done) => {
-  done(null, user);
+    done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-  done(null, user);
+    done(null, user);
 });
 
-// Test Route (Debug if session is stored)
+// Debugging: Check if session is storing user info
 app.get('/', (req, res) => {
-  console.log("Session user:", req.session.user);
-  res.send(req.session.user !== undefined ? `Logged in as ${req.session.user.displayName}` : "Logged out");
+    console.log("Session user:", req.session.user);
+    res.send(req.session.user ? `Logged in as ${req.session.user.displayName}` : "Logged out");
 });
 
-// GitHub OAuth Callback Route
-app.get('/github/callback', passport.authenticate('github', { failureRedirect: '/api-docs' }),
-  (req, res) => {
-    req.session.user = req.user;
-    res.redirect('/');
-  }
+// GitHub OAuth Callback Route (Ensures session is set)
+app.get('/github/callback', 
+    passport.authenticate('github', { failureRedirect: '/' }),
+    (req, res) => {
+        console.log("User authenticated:", req.user);
+        req.session.user = req.user;
+        res.redirect('/');
+    }
 );
 
 // Connect to MongoDB and Start Server
 mongodb.initDb((err) => {
-  if (err) {
-      console.log(err);
-  } else {
-      app.listen(port, () => {
-          console.log(`Connected to DB and listening on port ${port}`);
-      });
-  }
+    if (err) {
+        console.log(err);
+    } else {
+        app.listen(port, () => {
+            console.log(`Connected to DB and listening on port ${port}`);
+        });
+    }
 });
