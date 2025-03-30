@@ -1,11 +1,12 @@
 const express = require('express');
 const passport = require('passport');
+const { isAuthenticated } = require('../middleware/isAuthenticated');
 
 const router = express.Router();
 
 // Import other route files
-router.use('/students', require('./students'));
-router.use('/teachers', require('./teachers'));
+router.use('/students', isAuthenticated, require('./students')); // Protected Route
+router.use('/teachers', isAuthenticated, require('./teachers')); // Protected Route
 router.use('/', require('./swagger'));
 
 // Home route
@@ -14,40 +15,27 @@ router.get('/', (req, res) => {
 });
 
 // GitHub Login Route
-router.get('/login', passport.authenticate('github', { scope: ['user'] }));
+// GitHub Login Route
+router.get('/login', passport.authenticate('github'), (req, res) => { });
 
-// GitHub OAuth Callback Route
-router.get(
-  '/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect('/profile'); // Redirect after successful login
-  }
-);
-
-// Profile Route (Requires Authentication)
-router.get('/profile', ensureAuthenticated, (req, res) => {
-  res.json({ message: 'Welcome to your profile', user: req.user });
-});
-
-// Logout Route
+// GitHub Logout Route (Fix session clearing)
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
-    
-    req.session.destroy((err) => {
-      if (err) return next(err);
+    req.session.destroy(() => {
       res.redirect('/');
     });
   });
 });
 
-// Middleware to check authentication
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
+// GitHub OAuth Callback Route (Avoid duplicate)
+router.get(
+  '/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/' }),
+  (req, res) => {
+    req.session.user = req.user; // Store user in session
+    res.redirect('/profile'); // Redirect after successful login
   }
-  res.status(401).json({ message: 'Unauthorized. Please log in.' });
-}
+);
 
 module.exports = router;

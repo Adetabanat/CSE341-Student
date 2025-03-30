@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const teachersController = require('../controllers/teachers'); // Ensure the correct path
-const { isAuthenticated } = require('../middleware/authenticate');
+const { isAuthenticated } = require('../middleware/isAuthenticated');
 
 router.get('/', isAuthenticated, teachersController.getAllTeachers);
 router.get('/:id',isAuthenticated, teachersController.getSingleTeacher);
