@@ -7,7 +7,7 @@
   },
   "host": "cse341-student.onrender.com",
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": ["http","https"],
   "securityDefinitions": {
     "GitHubOAuth": {
       "type": "oauth2",

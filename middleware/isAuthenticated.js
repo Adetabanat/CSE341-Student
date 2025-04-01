@@ -1,10 +1,8 @@
-// middleware/isAuthenticated.js
 const isAuthenticated = (req, res, next) => {
-  if (req.session.user== undefined) {
+  if (!req.isAuthenticated() || !req.user) {
     return res.status(401).json({ message: 'Unauthorized Please Login' });
   }
   next();
 };
 
-module.exports = { isAuthenticated }
-  
+module.exports = { isAuthenticated };

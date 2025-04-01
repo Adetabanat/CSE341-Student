@@ -46,11 +46,11 @@ app
 
 // Serialize and deserialize user
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user); // Store full user object
 });
 
-passport.deserializeUser((id, done) => {
-    done(null, {id});
+passport.deserializeUser((user, done) => {
+    done(null, user); // Restore full user object
 });
 
 // Debugging: Check if session is storing user info
@@ -58,12 +58,13 @@ app.get('/', (req, res) => {res.send(req.session.user !== undefined ? `Logged in
 
 // GitHub OAuth Callback Route (Ensures session is set)
 app.get('/github/callback', 
-    passport.authenticate('github', { failureRedirect: '/api-docs', session: false}),
+    passport.authenticate('github', { failureRedirect: '/api-docs' }), 
     (req, res) => {
-        req.session.user = req.user;
+        req.session.user = req.user; // Save user in session
         res.redirect('/');
     }
 );
+
 
 // Connect to MongoDB and Start Server
 mongodb.initDb((err) => {
