@@ -6,6 +6,7 @@ const doc = {
     description: 'Student Record API',
   },
   host: 'localhost:8080',
+  basePath: "/",
   schemes: ['http', 'https'] ,
 };
 

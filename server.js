@@ -58,10 +58,10 @@ app.get('/', (req, res) => {res.send(req.session.user !== undefined ? `Logged in
 
 // GitHub OAuth Callback Route (Ensures session is set)
 app.get('/github/callback', 
-    passport.authenticate('github', { failureRedirect: '/api-docs', session: true}),
+    passport.authenticate('github', { failureRedirect: '/api-docs', session: false}),
     (req, res) => {
         req.session.user = req.user;
-        res.redirect('/api-docs');
+        res.redirect('/');
     }
 );
 
