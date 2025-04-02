@@ -5,9 +5,9 @@ const doc = {
     title: 'My API',
     description: 'Student Record API',
   },
-  host: 'localhost:8080',
+  host: 'cse341-student.onrender.com',
   basePath: "/",
-  schemes: ['http'],
+  schemes: ['https'],
   paths: {
     "/students": {
         // Define user-related endpoints here
