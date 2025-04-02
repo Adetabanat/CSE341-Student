@@ -5,10 +5,10 @@
     "description": "Student Record API",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "cse341-student.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/students/": {
