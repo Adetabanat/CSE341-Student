@@ -86,7 +86,7 @@
             "description": "No Content"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized "
           },
           "500": {
             "description": "Internal Server Error"
