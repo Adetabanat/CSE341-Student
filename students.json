@@ -5,6 +5,7 @@
     "dateOfBirth": "2005-04-15",
     "age": 19,
     "email": "john.doe@example.com",
+    "password": "Johnny@2005",
     "homeTown": "Accra",
     "studentClass": "Form 3",
     "house": "Red House",
@@ -18,6 +19,7 @@
     "dateOfBirth": "2006-06-22",
     "age": 18,
     "email": "sarah.mensah@example.com",
+    "password": "Sarah@2006",
     "homeTown": "Kumasi",
     "studentClass": "Form 2",
     "house": "Blue House",
@@ -31,6 +33,7 @@
     "dateOfBirth": "2007-08-30",
     "age": 17,
     "email": "kwame.owusu@example.com",
+    "password": "Kwame@2007",
     "homeTown": "Cape Coast",
     "studentClass": "Form 1",
     "house": "Green House",
@@ -44,6 +47,7 @@
     "dateOfBirth": "2005-12-10",
     "age": 19,
     "email": "ama.baah@example.com",
+    "password": "Ama@2005",
     "homeTown": "Tamale",
     "studentClass": "Form 3",
     "house": "Yellow House",
@@ -57,6 +61,7 @@
     "dateOfBirth": "2006-11-25",
     "age": 18,
     "email": "david.asante@example.com",
+    "password": "David@2006",
     "homeTown": "Takoradi",
     "studentClass": "Form 2",
     "house": "Purple House",
@@ -65,3 +70,4 @@
     "contact": "+233505678901"
   }
 ]
+  

@@ -7,8 +7,17 @@ const doc = {
   },
   host: 'localhost:8080',
   basePath: "/",
-  schemes: ['https'] ,
-};
+  schemes: ['http','https'],
+  paths: {
+    "/students": {
+        // Define user-related endpoints here
+    },
+    "/teachers": {  // Add this for tasks
+        // Define task-related endpoints here
+    },
+  },
+
+}
 
 const outputFile = './swagger.json';
 const endpointsFiles = ['./routes/index.js'];

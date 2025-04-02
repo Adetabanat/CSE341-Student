@@ -1,31 +1,24 @@
-const express = require('express');
-const passport = require('passport');
-const { isAuthenticated } = require('../middleware/isAuthenticated');
+const router = require("express").Router();
 
-const router = express.Router();
+router.use("/", require("./swagger"));
 
-// Import other route files
-router.use('/', require('./swagger'));  
-router.use('/students', isAuthenticated, require('./students')); // Protected Route
-router.use('/teachers', isAuthenticated, require('./teachers')); // Protected Route
+const passport = require("passport");
+const helloWorld = require("../controllers/helloWorld")
 
 
-// Home route
-router.get('/', (req, res) => {
-    res.send('Welcome to my SMA API');
-});
-
-// GitHub Login Route
-router.get('/login', passport.authenticate('github', { scope: ['user:email'] }));
-
-// GitHub OAuth Callback Route (Ensuring user is stored in session)
 
 
-// GitHub Logout Route (Fix session clearing)
-router.get('/logout', function (req, res, next)  {
-    req.logout(function (err) {
-     if (err) {return next(err);}
-     res.redirect('/');
+router.use("/students", require("./students"));
+
+router.use("/teachers", require("./teachers"));
+
+
+router.get("/login", passport.authenticate("github"), (req,res) =>{});
+
+router.get("/logout", function (req,res,next){
+    req.logOut(function(err){
+        if (err) {return next (err);}
+        res.redirect("/");
     });
 });
 
