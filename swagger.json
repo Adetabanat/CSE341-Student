@@ -5,7 +5,7 @@
     "description": "Student Record API",
     "version": "1.0.0"
   },
-  "host": "cse-341-project1-r42m.onrender.com",
+  "host": "cse341-student.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
