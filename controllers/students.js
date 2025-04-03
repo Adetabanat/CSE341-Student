@@ -11,8 +11,7 @@ const getAll = async (req, res) => {
         res.setHeader("Content-Type", "application/json");
         res.status(200).json(students);
     } catch (err) {
-        console.error("Error fetching students:", err);
-        res.status(500).json({ message: "An error occurred while fetching students", error: err.message });
+        res.status(500).json({ message: "An error occurred while fetching students", error: err });
     }
 };
 
@@ -20,51 +19,49 @@ const getSingle = async (req, res) => {
     // #swagger.tags = ["Students"]
     try {
         if (!ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ message: "You must provide a valid ID" });
+            return res.status(400).json({ message: "Invalid student ID" });
         }
 
         const studentId = new ObjectId(req.params.id);
-        const student = await mongodb.getDatabase().db().collection("students").findOne({ _id: studentId });
+        const result = await mongodb.getDatabase().db().collection("students").find({ _id: studentId });
+        const users = await result.toArray();
 
-        if (!student) {
-            return res.status(404).json({ message: "Student not found" });
-        }
-
+      
         res.setHeader("Content-Type", "application/json");
-        res.status(200).json(student);
+        res.status(200).json(result);
     } catch (err) {
-        console.error("Error fetching student:", err);
-        res.status(500).json({ message: "An error occurred while fetching the student", error: err.message });
+        res.status(500).json({ message: "An error occurred while fetching the student", error: err });
     }
 };
 
 const createStudent = async (req, res) => {
+    // #swagger.tags = ["Students"]
     try {
+
         const student = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             dateOfBirth: req.body.dateOfBirth,
             age: req.body.age,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
             homeTown: req.body.homeTown,
             studentClass: req.body.studentClass,
             house: req.body.house,
             group: req.body.group,
             parentName: req.body.parentName,
-            contact: req.body.contact
+            contact: req.body.contact,
         };
 
         const response = await mongodb.getDatabase().db().collection("students").insertOne(student);
 
-        if (response.acknowledged) {
-            res.status(201).json({ message: "Student created successfully", studentId: response.insertedId });
+        if (response.acknowledged > 0) {
+            res.status(204).send();
         } else {
-            res.status(500).json({ message: "Failed to create student" });
+            res.status(500).json(response.error || "Some error occurred while inserting the user");
         }
     } catch (err) {
-        console.error("Error creating student:", err);
-        res.status(500).json({ message: "An error occurred while creating the student", error: err.message });
+        res.status(500).json({ message: "An error occurred while creating the user", error: err });
     }
 };
 
@@ -72,55 +69,55 @@ const updateStudent = async (req, res) => {
     // #swagger.tags = ["Students"]
     try {
         if (!ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ message: "You must provide a valid ID" });
+            return res.status(400).json({ message: "Invalid student ID" });
         }
 
         const studentId = new ObjectId(req.params.id);
-        const student = {
+    
+        const updatedStudent = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             dateOfBirth: req.body.dateOfBirth,
             age: req.body.age,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
             homeTown: req.body.homeTown,
             studentClass: req.body.studentClass,
             house: req.body.house,
             group: req.body.group,
             parentName: req.body.parentName,
-            contact: req.body.contact
+            contact: req.body.contact,
         };
 
-        const response = await mongodb.getDatabase().db().collection("students").replaceOne({ _id: studentId }, student);
+        const response = await mongodb.getDatabase().db().collection("students").replaceOne({ _id: studentId }, updatedStudent);
 
         if (response.modifiedCount > 0) {
             res.status(200).json({ message: "Student updated successfully" });
         } else {
-            res.status(404).json({ message: "No student found to update" });
+            res.status(404).json({ message: "Student not found or no changes made" });
         }
     } catch (err) {
-        console.error("Error updating student:", err);
-        res.status(500).json({ message: "An error occurred while updating the student", error: err.message });
+        res.status(500).json({ message: "An error occurred while updating the student", error: err });
     }
 };
 
 const deleteStudent = async (req, res) => {
+    // #swagger.tags = ["Students"]
     try {
         if (!ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ message: "You must provide a valid ID" });
+            return res.status(400).json({ message: "Invalid student ID" });
         }
 
         const studentId = new ObjectId(req.params.id);
         const response = await mongodb.getDatabase().db().collection("students").deleteOne({ _id: studentId });
 
         if (response.deletedCount > 0) {
-            res.status(200).json({ message: "Student deleted successfully" });
+            res.status(204).send();
         } else {
-            res.status(404).json({ message: "No student found to delete" });
+            res.status(500).json(response.error || "An error occurred while deleting the user");
         }
     } catch (err) {
-        console.error("Error deleting student:", err);
-        res.status(500).json({ message: "An error occurred while deleting the student", error: err.message });
+        res.status(500).json({ message: "An error occurred while deleting the user", error: err });
     }
 };
 
@@ -129,5 +126,5 @@ module.exports = {
     getSingle,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
 };
