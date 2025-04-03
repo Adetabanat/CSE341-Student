@@ -24,7 +24,7 @@ const getSingle = async (req, res) => {
 
         const studentId = new ObjectId(req.params.id);
         const result = await mongodb.getDatabase().db().collection("students").find({ _id: studentId });
-        const users = await result.toArray();
+        const students = await result.toArray();
 
       
         res.setHeader("Content-Type", "application/json");
