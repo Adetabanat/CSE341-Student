@@ -57,12 +57,12 @@ PUT http://localhost:3000/tasks/67db68fd2f31d775f9062704/67e48806f18fd5b21272738
 Content-Type: application/json
 
 {
-    "title": "Node project",
-    "description": "this shows my skills in node",
+    "title": "Math Assignment",
+    "description": "This assignment demonstrates my problem-solving skills in mathematics.",
     "dueDate": "March 22, 2025",
-    "progress": "finished1111q it.",
-    "instructor": "jeremy lindsy",
-    "subject": "node class"
+    "progress": "Finished it.",
+    "instructor": "Dan Brown",
+    "subject": "Mathematics"
 }
 
 ### Delete a task for a user
