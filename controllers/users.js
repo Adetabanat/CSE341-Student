@@ -97,7 +97,7 @@ const deleteUser = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("users").deleteOne({ _id: userId });
 
         if (response.deletedCount > 0) {
-            res.status(204).json({ message: "User deleted successfully" });;
+            res.status(204).send();
         } else {
             res.status(500).json(response.error || "An error occurred while deleting the user");
         }
