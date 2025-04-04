@@ -4,7 +4,7 @@
 GET http://localhost:8080/students
 
 ### Get a student by ID
-GET http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
+GET http://localhost:8080/students/67ed3e663c1aee9ff840a448
 
 ### Create a new student
 POST http://localhost:8080/students
@@ -54,7 +54,7 @@ DELETE http://localhost:8080/students/67d5b7c0c28f40d9b5337b88
 GET http://localhost:8080/teachers
 
 ### Get a teacher by ID
-GET http://localhost:8080/teachers/78d6c8d1e39f50e8a6459a99
+GET http://localhost:8080/teachers/67d7ff4032eec8ac588813ba
 
 ### Create a new teacher
 POST http://localhost:8080/teachers

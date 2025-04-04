@@ -8,9 +8,9 @@ const helloWorld = require("../controllers/helloWorld")
 
 
 
-router.use("/students", require("./students"));
+router.use("/tasks", require("./tasks"));
 
-router.use("/teachers", require("./teachers"));
+router.use("/users", require("./users"));
 
 
 router.get("/login", passport.authenticate("github"), (req,res) =>{});

@@ -1,92 +1,56 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
-    "description": "Student Record API",
+    "title": "User API",
+    "description": "User API",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
     "http"
   ],
   "paths": {
-    "/students/": {
+    "/login": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
       "get": {
         "tags": [
-          "Students"
+          "Tasks"
         ],
         "description": "",
         "produces": [
           "application/json"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "post": {
-        "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "dateOfBirth": {
-                  "example": "any"
-                },
-                "age": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "homeTown": {
-                  "example": "any"
-                },
-                "studentClass": {
-                  "example": "any"
-                },
-                "house": {
-                  "example": "any"
-                },
-                "group": {
-                  "example": "any"
-                },
-                "parentName": {
-                  "example": "any"
-                },
-                "contact": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -94,10 +58,10 @@
         }
       }
     },
-    "/students/{id}": {
+    "/tasks/{userId}/{taskId}": {
       "get": {
         "tags": [
-          "Students"
+          "Tasks"
         ],
         "description": "",
         "produces": [
@@ -105,7 +69,13 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "taskId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -114,116 +84,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Students"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "dateOfBirth": {
-                  "example": "any"
-                },
-                "age": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "homeTown": {
-                  "example": "any"
-                },
-                "studentClass": {
-                  "example": "any"
-                },
-                "house": {
-                  "example": "any"
-                },
-                "group": {
-                  "example": "any"
-                },
-                "parentName": {
-                  "example": "any"
-                },
-                "contact": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -231,55 +91,41 @@
         }
       }
     },
-    "/teachers/": {
-      "get": {
-        "tags": [
-          "Teachers"
-        ],
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
+    "/tasks/{userId}": {
       "post": {
+        "tags": [
+          "Tasks"
+        ],
         "description": "",
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
+                "title": {
                   "example": "any"
                 },
-                "lastName": {
+                "description": {
                   "example": "any"
                 },
-                "email": {
+                "dueDate": {
+                  "example": "any"
+                },
+                "progress": {
+                  "example": "any"
+                },
+                "instructor": {
                   "example": "any"
                 },
                 "subject": {
-                  "example": "any"
-                },
-                "yearsOfExperience": {
-                  "example": "any"
-                },
-                "contact": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
-                },
-                "password": {
                   "example": "any"
                 }
               }
@@ -302,10 +148,169 @@
         }
       }
     },
-    "/teachers/{id}": {
+    "/tasks/{userId}/{id}": {
+      "put": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "dueDate": {
+                  "example": "any"
+                },
+                "progress": {
+                  "example": "any"
+                },
+                "instructor": {
+                  "example": "any"
+                },
+                "subject": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/": {
       "get": {
         "tags": [
-          "Teachers"
+          "Users"
+        ],
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
         ],
         "description": "",
         "produces": [
@@ -333,7 +338,7 @@
       },
       "put": {
         "tags": [
-          "Teachers"
+          "Users"
         ],
         "description": "",
         "parameters": [
@@ -355,22 +360,10 @@
                 "lastName": {
                   "example": "any"
                 },
-                "email": {
-                  "example": "any"
-                },
-                "subject": {
-                  "example": "any"
-                },
-                "yearsOfExperience": {
-                  "example": "any"
-                },
-                "contact": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
-                },
                 "password": {
+                  "example": "any"
+                },
+                "email": {
                   "example": "any"
                 }
               }
@@ -393,6 +386,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {

@@ -1,30 +1,38 @@
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 const express = require("express");
 const app = express();
-const mongodb = require("./data/database"); // ✅ Fixed import
+const mongdb = require("./data/database");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const session = require("express-session");
 const GitHubStrategy = require("passport-github2").Strategy;
 const cors = require("cors");
 
-// Middleware
+
 app.use(bodyParser.json());
 app.use(session({
-    secret: process.env.SESSION_SECRET || "default_secret",
+    secret: "3948109348213048",
     resave: false,
     saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); 
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization"
+    );
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); 
+    next();
+});
+
 app.use(cors({
-    origin: "*",
+    origin: "*",  // Allow all origins
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Z-Key", "Authorization"]
 }));
-
-// Routes
-app.use("/", require("./routes/index"));
+app.use("/", require("./routes/index"))
 
 passport.use(new GitHubStrategy(
     {
@@ -37,15 +45,14 @@ passport.use(new GitHubStrategy(
     }
 ));
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user, done) =>{
+    done(null,user);
+});
+
+passport.deserializeUser((user,done) =>{
     done(null, user);
 });
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
-
-// Test Route
 app.get("/", (req, res) => {res.send(req.session.user !== undefined ? `Logged in as ${req.session.user.displayName}` : "Logged Out");});
 app.get("/github/callback", passport.authenticate("github", {
     failureRedirect: "/api-docs", session: false}),
@@ -55,20 +62,22 @@ app.get("/github/callback", passport.authenticate("github", {
 });
 
 
-// Start Server
-const port = process.env.PORT || 8080;
 
-process.on("uncaughtException", (err) => {
-    console.error("Caught exception:", err);
+const port = process.env.PORT || 3000;
+
+
+process.on("uncaughtException", (err, origin)=>{
+    console.log(process.stderr.fd, `caught exception: ${err}\n` * `Exception origin: ${origin}`);
 });
 
-// ✅ FIX: Corrected function call from `mongdb.initdb()` to `mongodb.initDb()`
-mongodb.initDb((err) => {
-    if (err) {
-        console.error("Database initialization failed:", err);
-    } else {
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
+
+mongdb.initdb((err) =>{
+    if(err){
+        console.log(err)
+    }
+    else{
+        app.listen(port, () =>{
+            console.log("Database is listening at " + ((port)));
         });
     }
 });
