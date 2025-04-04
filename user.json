@@ -1,0 +1,39 @@
+[
+    {
+        "firstName": "Dan",
+        "lastName": "Nat",
+        "password": "thissimypasswords",
+        "email": "natty@gmail.com"
+    },
+    {
+        "firstName": "Alice",
+        "lastName": "Johnson",
+        "password": "aliceSecure123",
+        "email": "alice.johnson@example.com"
+    },
+    {
+        "firstName": "Bob",
+        "lastName": "Smith",
+        "password": "bobPassword!456",
+        "email": "bob.smith@example.com"
+    },
+    {
+        "firstName": "Charlie",
+        "lastName": "Brown",
+        "password": "charliePass789",
+        "email": "charlie.brown@example.com"
+    },
+    {
+        "firstName": "Diana",
+        "lastName": "Prince",
+        "password": "wonderWoman2024",
+        "email": "diana.prince@example.com"
+    },
+    {
+        "firstName": "Ethan",
+        "lastName": "Hunt",
+        "password": "impossibleMission",
+        "email": "ethan.hunt@example.com"
+    }
+
+]
