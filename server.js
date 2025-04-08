@@ -49,18 +49,6 @@ passport.deserializeUser((obj, done) => {
 // Routes
 app.use("/", require("./routes/index")); // Your other routes (tasks, users, etc.)
 
-// GitHub OAuth Routes
-app.get("/auth/github", passport.authenticate("github", { scope: ["user:email"] }));
-
-// GitHub OAuth Callback
-app.get("/github/callback", 
-    passport.authenticate("github", { failureRedirect: "/api-docs" }),
-    (req, res) => {
-        // Upon successful authentication, redirect to profile
-        req.session.user = req.user; // Store user info in session
-        res.redirect("/profile");
-    }
-);
 
 // Logout Route
 app.get("/logout", (req, res, next) => {
