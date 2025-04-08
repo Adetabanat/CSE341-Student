@@ -32,7 +32,7 @@ app.use(cors({
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.CALLBACK_URL || "http://localhost:3000/github/callback" // Use default if not in .env
+    callbackURL: process.env.CALLBACK_URL || "https://cse341-student.onrender.com/github/callback" // Use default if not in .env
 }, (accessToken, refreshToken, profile, done) => {
     return done(null, profile);
 }));
