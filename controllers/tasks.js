@@ -7,7 +7,7 @@ const getAll = async (req, res) => {
     // #swagger.tags = ["Tasks"]
     try {
         const userId = new ObjectId(req.params.id);
-        const result = await mongodb.getDatabase().db().collection("tasks").find({ userId: userId });
+        const result = await mongodb.getDatabase().db().collection("tasks").find();
         const tasks = await result.toArray();
         res.setHeader("Content-type", "application/json");
         res.status(200).json(tasks);
