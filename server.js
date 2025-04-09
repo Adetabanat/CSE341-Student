@@ -67,11 +67,15 @@ app.get("/login", passport.authenticate("github"));
 
 app.get("/github/callback",
   passport.authenticate("github", { failureRedirect: "/api-docs" }),
-  (req, res) => {
-    req.session.user = req.user;
-    res.redirect("/");
+  (req, res, next) => {
+    req.login(req.user, function (err) {
+      if (err) return next(err);
+      req.session.user = req.user;
+      res.redirect("/");
+    });
   }
 );
+
 
 // Logout
 app.get("/logout", (req, res, next) => {
