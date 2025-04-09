@@ -15,13 +15,7 @@ app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 app.use(session({
   secret: "0244734362", // You can move this to .env
   resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: false,
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60
-  }
-  
+  saveUninitialized: false
 }));
 
 app.use(passport.initialize());
@@ -67,15 +61,11 @@ app.get("/login", passport.authenticate("github"));
 
 app.get("/github/callback",
   passport.authenticate("github", { failureRedirect: "/api-docs" }),
-  (req, res, next) => {
-    req.login(req.user, function (err) {
-      if (err) return next(err);
-      req.session.user = req.user;
-      res.redirect("/");
-    });
+  (req, res) => {
+    req.session.user = req.user;
+    res.redirect("/");
   }
 );
-
 
 // Logout
 app.get("/logout", (req, res, next) => {
