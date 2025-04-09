@@ -57,9 +57,9 @@ app.get("/", (req, res) => {
 });
 
 // GitHub Login & Callback
-app.get("/login", passport.authenticate("github"));
+app.get("/login", passport.authenticate("github")); 
 
-app.get("/github/callback",
+app.get("/auth/github/callback",
   passport.authenticate("github", { failureRedirect: "/api-docs" }),
   (req, res) => {
     req.session.user = req.user;
