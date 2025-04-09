@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "SCHOOL MANAGEMENT SYSTEM API",
-    "description": "SMS User API",
+    "title": "SCHOOL MANAGEMENT API",
+    "description": "User API",
     "version": "1.0.0"
   },
   "host": "cse341-student.onrender.com",
@@ -11,7 +11,7 @@
     "https"
   ],
   "paths": {
-    "/tasks/{id}": {
+    "/tasks/": {
       "get": {
         "tags": [
           "Tasks"
@@ -19,14 +19,6 @@
         "description": "",
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
         ],
         "responses": {
           "200": {

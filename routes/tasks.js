@@ -5,7 +5,7 @@ const taskController = require("../controllers/tasks");
 const validation = require("../middleware/validate")
 const {isAuthenticated} = require("../middleware/authenticate");
 
-router.get("/:id", taskController.getAll);
+router.get("/", taskController.getAll);
 
 router.get("/:userId/:taskId", taskController.getSingle);
 
