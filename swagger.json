@@ -1,17 +1,16 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "User API",
-    "description": "User API",
+    "title": "SCHOOL MANAGEMENT SYSTEM API",
+    "description": "SMS User API",
     "version": "1.0.0"
   },
-  "host": "cse341-student.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
   ],
   "paths": {
-   
     "/tasks/{id}": {
       "get": {
         "tags": [
