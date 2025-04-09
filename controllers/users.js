@@ -72,8 +72,11 @@ const updateUser = async (req, res) => {
         const user = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
+            email: req.body.email,
             password: req.body.password,
-            email: req.body.email
+            phoneNumber: req.body.phoneNumber,
+            role: req.body.role,
+            address: req.body.address
         };
 
         const response = await mongodb.getDatabase().db().collection("users").replaceOne({ _id: userid }, user);
