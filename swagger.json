@@ -11,8 +11,26 @@
     "https"
   ],
   "paths": {
- 
-   
+    "/login": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/tasks/{id}": {
       "get": {
         "tags": [
@@ -351,10 +369,19 @@
                 "lastName": {
                   "example": "any"
                 },
+                "email": {
+                  "example": "any"
+                },
                 "password": {
                   "example": "any"
                 },
-                "email": {
+                "phoneNumber": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                },
+                "address": {
                   "example": "any"
                 }
               }
