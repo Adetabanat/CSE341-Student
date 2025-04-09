@@ -5,8 +5,8 @@ const doc = {
         title: "User API",
         description: "User API"
     },
-    host: "cse341-student.onrender.com",  // Adjust this for both users and tasks API
-    schemes: ["https"],
+    host: "localhost:3000",  // Adjust this for both users and tasks API
+    schemes: ["http"],
     paths: {
         "/users": {
             // Define user-related endpoints here
