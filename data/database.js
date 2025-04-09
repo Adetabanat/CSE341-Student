@@ -32,10 +32,3 @@ module.exports = {
     initdb,
     getDatabase
 }
-
-
-
-
-
-
-

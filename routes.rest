@@ -2,7 +2,7 @@
 GET http://localhost:3000/users
 
 ### Get a single user
-GET http://localhost:3000/users/67efdc0bab286a4701c1253b
+GET http://localhost:3000/users/67f03112ee4094a3da895c84
 
 ### Create a new user
 POST http://localhost:3000/users
@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Delete a user
-DELETE http://localhost:3000/users/67de4087f445b8d557646ca7
+DELETE http://localhost:3000/users/67f03112ee4094a3da895c86
 
 ---
 

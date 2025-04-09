@@ -4,7 +4,10 @@ const saveUser = async (req, res, next) => {
         "firstName": "required|string",
         "lastName": "required|string",
         "password": "required|string|min:6",
-        "email": "required|string|email"
+        "email": "required|string|email",
+        "phoneNumber": "required|string|min:10",
+        "role": "required|string|in:student,admin,teacher,",
+        "address": "required|string|min:5"
     };
 
     await validator(req.body, validationRule, {}, (err, status) => {

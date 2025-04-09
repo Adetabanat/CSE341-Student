@@ -49,7 +49,7 @@ const createTask = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("tasks").insertOne(task);
         
         if (response.acknowledged > 0) {
-            res.status(204).json({ message: "Task created successfully", taskId: response.insertedId });
+            res.status(200).json({ message: "Task created successfully"});
         } else {
             res.status(500).json(response.error || "Some error occurred while creating a new task");
         }
@@ -81,7 +81,7 @@ const updateTask = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("tasks").replaceOne({ userId: userId, _id: taskid }, task);
 
         if (response.modifiedCount > 0) {
-            res.status(204).send();
+            res.status(200).json({ message: "Task updated successfully"});
         } else {
             res.status(500).json(response.error || "Some error occurred while updating task");
         }
@@ -104,7 +104,7 @@ const deleteTask = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("tasks").deleteOne({ userId: userId, _id: taskId });
 
         if (response.deletedCount > 0) {
-            res.status(204).send();
+            res.status(204).json({ message: "Task deleted successfully"});
         } else {
             res.status(500).json(response.error || "An error occurred while deleting the task");
         }

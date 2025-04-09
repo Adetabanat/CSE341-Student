@@ -41,14 +41,17 @@ const CreateUser = async (req, res) => {
         const user = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
+            email: req.body.email,
             password: req.body.password,
-            email: req.body.email
+            phoneNumber: req.body.phoneNumber,
+            role: req.body.role,
+            address: req.body.address
         };
 
         const response = await mongodb.getDatabase().db().collection("users").insertOne(user);
 
         if (response.acknowledged > 0) {
-            res.status(204).send();
+            res.status(200).json({ message: "User created successfully"});
         } else {
             res.status(500).json(response.error || "Some error occurred while inserting the user");
         }
@@ -76,7 +79,7 @@ const updateUser = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("users").replaceOne({ _id: userid }, user);
 
         if (response.modifiedCount > 0) {
-            res.status(204).send();
+            res.status(200).json({ message: "User updated successfully" });
         } else {
             res.status(500).json(response.error || "Some error occurred while updating the user");
         }
@@ -97,7 +100,7 @@ const deleteUser = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("users").deleteOne({ _id: userId });
 
         if (response.deletedCount > 0) {
-            res.status(204).send();
+            res.status(200).json({ message: "User deleted successfully" });
         } else {
             res.status(500).json(response.error || "An error occurred while deleting the user");
         }
