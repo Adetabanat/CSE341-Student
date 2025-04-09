@@ -6,7 +6,7 @@ const {isAuthenticated} = require("../middleware/authenticate");
 
 router.get("/", userController.getAll );
 
-router.get("/:id", userController.getSingle );
+router.get("/:id",isAuthenticated, validation.saveTask, userController.getSingle );
 
 router.post("/", isAuthenticated,  validation.saveUser, userController.CreateUser);
 
