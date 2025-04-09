@@ -2,7 +2,7 @@ const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
     info: {
-        title: "User API",
+        title: "SCHOOL MANAGEMENT API",
         description: "User API"
     },
     host: "localhost:3000",  // Adjust this for both users and tasks API
