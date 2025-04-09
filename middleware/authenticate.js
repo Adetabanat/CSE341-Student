@@ -3,8 +3,10 @@ const isAuthenticated = (req, res, next) => {
       return res.status(401).json("🔒 Unauthorized. Please log in.");
     }
     next();
-  };
+};
   
+
+
 module.exports = {
     isAuthenticated
 }
