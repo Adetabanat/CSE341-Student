@@ -15,7 +15,13 @@ app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 app.use(session({
   secret: "0244734362", // You can move this to .env
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60
+  }
+  
 }));
 
 app.use(passport.initialize());
