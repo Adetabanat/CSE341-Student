@@ -7,7 +7,7 @@ const {isAuthenticated} = require("../middleware/authenticate");
 
 router.get("/", taskController.getAll);
 
-router.get("/:taskId", isAuthenticated,  taskController.getSingle);
+router.get("/:userId/:taskId", taskController.getSingle);
 
 router.post("/:userId",isAuthenticated, validation.saveTask, taskController.createTask);
 
