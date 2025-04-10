@@ -1,5 +1,7 @@
+
 const mongodb = require("../data/database");
-const ObjectId = require("mongodb").ObjectId;
+const ObjectId =  require("mongodb").ObjectId;
+
 
 const getAll = async (req, res) => {
     // #swagger.tags = ["Tasks"]
@@ -9,7 +11,7 @@ const getAll = async (req, res) => {
         res.setHeader("Content-type", "application/json");
         res.status(200).json(tasks);
     } catch (err) {
-        res.status(500).json({ message: "An error occurred while fetching the tasks", error: err });
+        res.status(500).json({ message: "An error occurred while fetching the user", error: err });
     }
 };
 
@@ -17,19 +19,17 @@ const getSingle = async (req, res) => {
     // #swagger.tags = ["Tasks"]
     try {
         const userId = new ObjectId(req.params.userId);
-        const taskId = new ObjectId(req.params.taskId);
-        const result = await mongodb.getDatabase().db().collection("tasks").findOne({ userId, _id: taskId });
-
-        if (!result) {
-            return res.status(404).json({ message: "Task not found" });
-        }
+        const tasksId = new ObjectId(req.params.taskId);
+        const result = await mongodb.getDatabase().db().collection("tasks").find({userId: userId,  _id: tasksId });
+        const tasks = await result.toArray();
 
         res.setHeader("Content-type", "application/json");
-        res.status(200).json(result);
+        res.status(200).json(tasks[0]);
     } catch (err) {
         res.status(500).json({ message: "An error occurred while fetching the task", error: err });
     }
 };
+
 
 const createTask = async (req, res) => {
     // #swagger.tags = ["Tasks"]
@@ -44,26 +44,30 @@ const createTask = async (req, res) => {
             subject: req.body.subject,
             userId: userId
         };
-
+        
         const response = await mongodb.getDatabase().db().collection("tasks").insertOne(task);
-
-        if (response.acknowledged) {
-            res.status(201).json({ message: "Task created successfully", taskId: response.insertedId });
+        
+        if (response.acknowledged > 0) {
+            res.status(200).json({ message: "Task created successfully"});
         } else {
-            res.status(500).json({ message: "Failed to create the task" });
+            res.status(500).json(response.error || "Some error occurred while creating a new task");
         }
     } catch (err) {
         res.status(500).json({ message: "An error occurred while creating the task", error: err });
     }
 };
 
+
 const updateTask = async (req, res) => {
     // #swagger.tags = ["Tasks"]
     try {
-        const taskId = new ObjectId(req.params.id);
-        const userId = new ObjectId(req.params.userId);
+        if (!ObjectId.isValid(req.params.id)) {
+            return res.status(400).json("You must have a valid id to update task");
+        }
 
-        const updatedTask = {
+        const userId = new ObjectId(req.params.userId);
+        const taskid = new ObjectId(req.params.id);
+        const task = {
             title: req.body.title,
             description: req.body.description,
             dueDate: req.body.dueDate,
@@ -73,35 +77,44 @@ const updateTask = async (req, res) => {
             userId: userId
         };
 
-        const response = await mongodb.getDatabase().db().collection("tasks").replaceOne({ _id: taskId, userId: userId }, updatedTask);
+        const response = await mongodb.getDatabase().db().collection("tasks").replaceOne({ userId: userId, _id: taskid }, task);
 
         if (response.modifiedCount > 0) {
-            res.status(200).json({ message: "Task updated successfully" });
+            res.status(200).json({ message: "Task updated successfully"});
         } else {
-            res.status(404).json({ message: "No task found to update" });
+            res.status(500).json(response.error || "Some error occurred while updating task");
         }
     } catch (err) {
         res.status(500).json({ message: "An error occurred while updating the task", error: err });
     }
 };
 
+
 const deleteTask = async (req, res) => {
     // #swagger.tags = ["Tasks"]
     try {
-        const taskId = new ObjectId(req.params.id);
-        const userId = new ObjectId(req.params.userId);
+        if (!ObjectId.isValid(req.params.id)) {
+            return res.status(400).json("You must have a valid id to delete task");
+        }
 
-        const response = await mongodb.getDatabase().db().collection("tasks").deleteOne({ _id: taskId, userId: userId });
+        const userId = new ObjectId(req.params.userId);
+        const taskId = new ObjectId(req.params.id);
+
+        const response = await mongodb.getDatabase().db().collection("tasks").deleteOne({ userId: userId, _id: taskId });
 
         if (response.deletedCount > 0) {
-            res.status(200).json({ message: "Task deleted successfully" });
+            res.status(20).json({ message: "Task deleted successfully"});
         } else {
-            res.status(404).json({ message: "No task found to delete" });
+            res.status(500).json(response.error || "An error occurred while deleting the task");
         }
     } catch (err) {
         res.status(500).json({ message: "An error occurred while deleting the task", error: err });
     }
 };
+
+
+
+
 
 module.exports = {
     getAll,
