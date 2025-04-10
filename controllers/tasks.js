@@ -103,7 +103,7 @@ const deleteTask = async (req, res) => {
         const response = await mongodb.getDatabase().db().collection("tasks").deleteOne({ userId: userId, _id: taskId });
 
         if (response.deletedCount > 0) {
-            res.status(20).json({ message: "Task deleted successfully"});
+            res.status(200).json({ message: "Task deleted successfully"});
         } else {
             res.status(500).json(response.error || "An error occurred while deleting the task");
         }
