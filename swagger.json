@@ -30,7 +30,7 @@
         }
       }
     },
-    "/tasks/{userId}/{taskId}": {
+    "/tasks/taskId": {
       "get": {
         "tags": [
           "Tasks"
@@ -38,20 +38,6 @@
         "description": "",
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "taskId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
         ],
         "responses": {
           "200": {
